@@ -1,11 +1,15 @@
 import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
 import { Link, useLocation } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
-import { FaMoon } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { FaMoon, FaSun } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleTheme } from "../redux/theme/themeSlice.js";
 
 export default function Header() {
+  const dispatch = useDispatch();
+
   const { currentUser } = useSelector((state) => state.user);
+  const { theme } = useSelector((state) => state.theme);
   const path = useLocation().pathname;
   return (
     <Navbar className="border-b-2">
@@ -31,8 +35,13 @@ export default function Header() {
         <AiOutlineSearch />
       </Button>
       <div className="flex gap-2 md:order-2">
-        <Button className="w-12 h-10 hidden sm:inline" color="gray" pill>
-          <FaMoon />
+        <Button
+          className="w-12 h-10 hidden sm:inline"
+          color="gray"
+          pill
+          onClick={() => dispatch(toggleTheme())}
+        >
+          {theme === "dark" ? <FaSun /> : <FaMoon />}
         </Button>
         {currentUser ? (
           <Dropdown
@@ -62,21 +71,21 @@ export default function Header() {
           </Link>
         )}
 
-        <Navbar.Toggle></Navbar.Toggle>
+        <Navbar.Toggle></Navbar.Toggle> 
       </div>
       <Navbar.Collapse>
         <Navbar.Link active={path === "/"} as={"div"}>
-          <Link to="/" className="text-green-700">
+          <Link to="/" className="text-green-700 dark:text-gray-400">
             Home
           </Link>
         </Navbar.Link>
         <Navbar.Link active={path === "/about"} as={"div"}>
-          <Link to="/about" className="text-green-700">
+          <Link to="/about" className="text-green-700 dark:text-gray-400">
             About
           </Link>
         </Navbar.Link>
         <Navbar.Link active={path === "/projects"} as={"div"}>
-          <Link to="/projects" className="text-green-700">
+          <Link to="/projects" className="text-green-700 dark:text-gray-400">
             Projects
           </Link>
         </Navbar.Link>
